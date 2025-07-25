@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import ImageGrid from "@/components/ImageGrid";
 import { portfolioImages, categories } from "@/lib/portfolio-data";
 import { Category } from "@/types";
 
-export default function PortfolioPage() {
+function PortfolioContent() {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category") as Category | null;
   
@@ -78,5 +78,13 @@ export default function PortfolioPage() {
         </div>
       </section>
     </div>
+  );
+}
+
+export default function PortfolioPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <PortfolioContent />
+    </Suspense>
   );
 }
