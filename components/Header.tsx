@@ -2,18 +2,16 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { NavLink } from "@/types";
-
-const navLinks: NavLink[] = [
-  { href: "/", label: "Home" },
-  { href: "/portfolio", label: "Portfolio" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
+import { useLanguage } from "@/contexts/LanguageContext";
+import { TexasFlag, MexicanFlag } from "@/components/FlagIcons";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -23,6 +21,13 @@ export default function Header() {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const navLinks: NavLink[] = [
+    { href: "/", label: t('nav.home') },
+    { href: "/portfolio", label: t('nav.portfolio') },
+    { href: "/about", label: t('nav.about') },
+    { href: "/contact", label: t('nav.contact') },
+  ];
 
   return (
     <header
@@ -40,18 +45,42 @@ export default function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <ul className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  className="nav-link text-sm uppercase tracking-widest"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="hidden md:flex items-center space-x-8">
+            <ul className="flex items-center space-x-8">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className={`nav-link link-underline text-sm uppercase tracking-widest focus-ring ${
+                      pathname === link.href ? 'text-accent' : ''
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            
+            {/* Language Toggle */}
+            <div className="flex items-center space-x-2 ml-4">
+              <button
+                onClick={() => setLanguage('en')}
+                className={`language-toggle ${language === 'en' ? 'active' : ''}`}
+                aria-label="Switch to English"
+                title="English (RGV/Brownsville)"
+              >
+                <TexasFlag className="w-6 h-4" />
+              </button>
+              <button
+                onClick={() => setLanguage('es')}
+                className={`language-toggle ${language === 'es' ? 'active' : ''}`}
+                aria-label="Cambiar a Español"
+                title="Español (Matamoros/México)"
+              >
+                <MexicanFlag className="w-6 h-4" />
+              </button>
+            </div>
+          </div>
 
           {/* Mobile Menu Button */}
           <button
@@ -85,19 +114,41 @@ export default function Header() {
               : "opacity-0 pointer-events-none"
           }`}
         >
-          <ul className="flex flex-col items-center justify-center h-full space-y-8">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link
-                  href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-2xl font-serif text-primary hover:text-accent transition-colors"
-                >
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          <div className="flex flex-col items-center justify-center h-full space-y-8">
+            <ul className="flex flex-col items-center space-y-8">
+              {navLinks.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-2xl font-serif text-primary hover:text-accent transition-colors"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            
+            {/* Mobile Language Toggle */}
+            <div className="flex items-center space-x-4 mt-8">
+              <button
+                onClick={() => setLanguage('en')}
+                className={`language-toggle ${language === 'en' ? 'active' : ''}`}
+                aria-label="Switch to English"
+                title="English (RGV/Brownsville)"
+              >
+                <TexasFlag className="w-8 h-5" />
+              </button>
+              <button
+                onClick={() => setLanguage('es')}
+                className={`language-toggle ${language === 'es' ? 'active' : ''}`}
+                aria-label="Cambiar a Español"
+                title="Español (Matamoros/México)"
+              >
+                <MexicanFlag className="w-8 h-5" />
+              </button>
+            </div>
+          </div>
         </div>
       </nav>
     </header>

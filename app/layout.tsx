@@ -3,6 +3,7 @@ import { Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -19,33 +20,34 @@ const cormorantGaramond = Cormorant_Garamond({
 
 export const metadata: Metadata = {
   title: {
-    default: "Mayoko Photos - Professional Photography Portfolio",
+    default: "Mayoko Photos - Fotografía Profesional Binacional | Rio Grande Valley",
     template: "%s | Mayoko Photos"
   },
-  description: "Capturing life's beautiful moments through moody, atmospheric photography with dramatic lighting. Professional photography services for portraits, lifestyle, and events.",
-  keywords: ["photographer", "photography", "portfolio", "portraits", "lifestyle photography", "professional photographer"],
-  authors: [{ name: "Mayoko Photos" }],
+  description: "Fotografía profesional de bodas, retratos y eventos sirviendo a la comunidad del Valle del Río Grande. Disponible en Matamoros, México y Brownsville, Texas. Professional wedding, portrait, and event photography serving the Rio Grande Valley community.",
+  keywords: ["photographer", "photography", "portfolio", "portraits", "wedding photography", "Rio Grande Valley", "Matamoros", "Brownsville", "Texas", "Mexico", "bilingual photographer", "fotografo", "fotografia", "bodas"],
+  authors: [{ name: "Mayoko Photos - Valeria" }],
   creator: "Mayoko Photos",
   openGraph: {
     type: "website",
-    locale: "en_US",
+    locale: "es_MX",
+    alternateLocale: "en_US",
     url: "https://mayokophotos.com",
     siteName: "Mayoko Photos",
-    title: "Mayoko Photos - Professional Photography Portfolio",
-    description: "Capturing life's beautiful moments through moody, atmospheric photography with dramatic lighting.",
+    title: "Mayoko Photos - Fotografía Profesional Binacional | Rio Grande Valley",
+    description: "Fotografía profesional que captura la esencia de momentos únicos con calidez y autenticidad para la comunidad del Valle del Río Grande.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Mayoko Photos Portfolio",
+        alt: "Mayoko Photos - Professional Photography Rio Grande Valley",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mayoko Photos - Professional Photography Portfolio",
-    description: "Capturing life's beautiful moments through moody, atmospheric photography with dramatic lighting.",
+    title: "Mayoko Photos - Fotografía Profesional Binacional",
+    description: "Fotografía profesional que captura la esencia de momentos únicos para la comunidad del Valle del Río Grande.",
     images: ["/og-image.jpg"],
   },
   robots: {
@@ -77,25 +79,48 @@ export default function RootLayout({
         <link rel="canonical" href="https://mayokophotos.com" />
       </head>
       <body className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+        <LanguageProvider>
+          <Header />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </LanguageProvider>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "Person",
-              name: "Mayoko Photos",
-              jobTitle: "Professional Photographer",
-              description: "Professional photographer specializing in moody, atmospheric photography with dramatic lighting",
+              name: "Valeria - Mayoko Photos",
+              jobTitle: "Professional Photographer / Fotógrafa Profesional",
+              description: "Professional wedding, portrait, and event photographer serving the Rio Grande Valley community. Based in Matamoros, Mexico, originally from McAllen, Texas. Fotógrafa profesional de bodas, retratos y eventos sirviendo a la comunidad del Valle del Río Grande.",
               url: "https://mayokophotos.com",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Matamoros",
+                addressRegion: "Tamaulipas",
+                addressCountry: "Mexico"
+              },
+              serviceArea: [
+                {
+                  "@type": "City",
+                  name: "Matamoros, Tamaulipas, Mexico"
+                },
+                {
+                  "@type": "City", 
+                  name: "Brownsville, Texas, USA"
+                },
+                {
+                  "@type": "Region",
+                  name: "Rio Grande Valley, Texas"
+                }
+              ],
               sameAs: [
                 "https://instagram.com/mayokophotos",
               ],
-              knowsAbout: ["Photography", "Portrait Photography", "Lifestyle Photography", "Event Photography"],
+              knowsAbout: ["Wedding Photography", "Portrait Photography", "Event Photography", "Cross-border Photography Services", "Fotografía de Bodas", "Retratos", "Eventos"],
+              knowsLanguage: ["Spanish", "English", "Español", "Inglés"],
             }),
           }}
         />

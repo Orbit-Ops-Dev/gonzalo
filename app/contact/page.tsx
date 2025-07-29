@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import { ContactFormData } from "@/types";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export default function ContactPage() {
+  const { t } = useLanguage();
   const [formData, setFormData] = useState<ContactFormData>({
     name: "",
     email: "",
@@ -56,12 +58,12 @@ export default function ContactPage() {
         <div className="container">
           <div className="max-w-4xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-12">
-              <h1 className="text-4xl md:text-6xl font-serif font-light mb-4">
-                Get in Touch
+            <div className="text-center mb-12 language-transition">
+              <h1 className="brand-header-large mb-4">
+                {t('contact.page.title')}
               </h1>
-              <p className="text-lg text-darkGray/80">
-                Ready to create something beautiful together? I&apos;d love to hear about your project.
+              <p className="text-lg text-primary/80">
+                {t('contact.page.subtitle')}
               </p>
             </div>
 
@@ -81,12 +83,12 @@ export default function ContactPage() {
                     d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
                   />
                 </svg>
-                <h3 className="text-xl font-serif mb-2">Email</h3>
+                <h3 className="text-xl font-medium mb-2 brand-header">{t('contact.info.email')}</h3>
                 <a
-                  href="mailto:contact@mayokophotos.com"
-                  className="text-darkGray/70 hover:text-accent transition-colors"
+                  href="mailto:valeria@mayokophotos.com"
+                  className="text-primary/70 hover:text-accent transition-colors"
                 >
-                  contact@mayokophotos.com
+                  valeria@mayokophotos.com
                 </a>
               </div>
 
@@ -110,8 +112,8 @@ export default function ContactPage() {
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <h3 className="text-xl font-serif mb-2">Location</h3>
-                <p className="text-darkGray/70">San Francisco Bay Area</p>
+                <h3 className="text-xl font-medium mb-2 brand-header">{t('contact.info.location')}</h3>
+                <p className="text-primary/70">{t('contact.info.location.desc')}</p>
               </div>
 
               <div className="text-center">
@@ -128,123 +130,125 @@ export default function ContactPage() {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <h3 className="text-xl font-serif mb-2">Response Time</h3>
-                <p className="text-darkGray/70">Within 24-48 hours</p>
+                <h3 className="text-xl font-medium mb-2 brand-header">{t('contact.info.response')}</h3>
+                <p className="text-primary/70">{t('contact.info.response.desc')}</p>
               </div>
             </div>
 
             {/* Contact Form */}
-            <form onSubmit={handleSubmit} className="bg-white p-8 md:p-12 rounded-sm shadow-sm">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium mb-2">
-                    Your Name *
+            <div className="language-transition">
+              <form onSubmit={handleSubmit} className="bg-secondary p-8 md:p-12 rounded-sm shadow-sm">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium mb-2">
+                      {t('contact.form.name')} *
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium mb-2">
+                      {t('contact.form.email')} *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                  <div>
+                    <label htmlFor="preferredContact" className="block text-sm font-medium mb-2">
+                      {t('contact.form.preferred')} *
+                    </label>
+                    <select
+                      id="preferredContact"
+                      name="preferredContact"
+                      value={formData.preferredContact}
+                      onChange={handleChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
+                    >
+                      <option value="email">{t('contact.form.email.option')}</option>
+                      <option value="phone">{t('contact.form.phone.option')}</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium mb-2">
+                      {t('contact.form.phone')} {formData.preferredContact === "phone" && "*"}
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      name="phone"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      required={formData.preferredContact === "phone"}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <label htmlFor="projectDetails" className="block text-sm font-medium mb-2">
+                    {t('contact.form.project')} *
                   </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
+                  <textarea
+                    id="projectDetails"
+                    name="projectDetails"
+                    value={formData.projectDetails}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
+                    rows={6}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors resize-none"
+                    placeholder={t('contact.form.placeholder')}
                   />
                 </div>
 
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div>
-                  <label htmlFor="preferredContact" className="block text-sm font-medium mb-2">
-                    Preferred Contact Method *
-                  </label>
-                  <select
-                    id="preferredContact"
-                    name="preferredContact"
-                    value={formData.preferredContact}
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
+                {/* Submit Button */}
+                <div className="text-center">
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`btn-primary ${
+                      isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                   >
-                    <option value="email">Email</option>
-                    <option value="phone">Phone</option>
-                  </select>
+                    {isSubmitting ? t('contact.form.sending') : t('contact.form.send')}
+                  </button>
                 </div>
 
-                <div>
-                  <label htmlFor="phone" className="block text-sm font-medium mb-2">
-                    Phone Number {formData.preferredContact === "phone" && "*"}
-                  </label>
-                  <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    required={formData.preferredContact === "phone"}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors"
-                  />
-                </div>
-              </div>
-
-              <div className="mb-6">
-                <label htmlFor="projectDetails" className="block text-sm font-medium mb-2">
-                  Tell me about your project *
-                </label>
-                <textarea
-                  id="projectDetails"
-                  name="projectDetails"
-                  value={formData.projectDetails}
-                  onChange={handleChange}
-                  required
-                  rows={6}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-sm focus:ring-2 focus:ring-accent focus:border-accent transition-colors resize-none"
-                  placeholder="Please describe your photography needs, event date (if applicable), location, and any specific vision you have in mind..."
-                />
-              </div>
-
-              {/* Submit Button */}
-              <div className="text-center">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`btn-primary ${
-                    isSubmitting ? "opacity-50 cursor-not-allowed" : ""
-                  }`}
-                >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </button>
-              </div>
-
-              {/* Status Messages */}
-              {submitStatus === "success" && (
-                <div className="mt-6 p-4 bg-green-50 text-green-800 rounded-sm text-center">
-                  Thank you for your message! I&apos;ll get back to you within 24-48 hours.
-                </div>
-              )}
-              {submitStatus === "error" && (
-                <div className="mt-6 p-4 bg-red-50 text-red-800 rounded-sm text-center">
-                  Something went wrong. Please try again or email me directly.
-                </div>
-              )}
-            </form>
+                {/* Status Messages */}
+                {submitStatus === "success" && (
+                  <div className="mt-6 p-4 bg-green-50 text-green-800 rounded-sm text-center">
+                    {t('contact.form.success')}
+                  </div>
+                )}
+                {submitStatus === "error" && (
+                  <div className="mt-6 p-4 bg-red-50 text-red-800 rounded-sm text-center">
+                    {t('contact.form.error')}
+                  </div>
+                )}
+              </form>
+            </div>
 
             {/* Social Links */}
-            <div className="mt-12 text-center">
-              <p className="text-lg mb-4">Connect on social media</p>
+            <div className="mt-12 text-center language-transition">
+              <p className="text-lg mb-4">{t('contact.social.title')}</p>
               <a
                 href="https://instagram.com/mayokophotos"
                 target="_blank"

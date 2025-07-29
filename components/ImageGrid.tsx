@@ -22,25 +22,30 @@ export default function ImageGrid({ images, columns = 3 }: ImageGridProps) {
   return (
     <>
       <div className={`grid ${gridCols[columns]} gap-4 md:gap-6`}>
-        {images.map((image) => (
+        {images.map((image, index) => (
           <div
             key={image.id}
-            className="group relative overflow-hidden rounded-sm cursor-pointer"
+            className="group relative overflow-hidden rounded-sm cursor-pointer interactive-card-subtle"
             onClick={() => setSelectedImage(image)}
+            style={{
+              animationDelay: `${index * 100}ms`
+            }}
           >
             <div className="relative aspect-[4/5] overflow-hidden bg-gray-100">
               <Image
                 src={image.src}
                 alt={image.alt}
                 fill
-                className="object-cover hover:scale-105 transition-transform duration-500"
+                className="object-cover image-hover-scale"
                 sizes={`(max-width: 768px) 100vw, (max-width: 1200px) ${100 / columns}vw, ${1200 / columns}px`}
               />
-              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-300" />
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-400 ease-out" />
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-400 ease-out transform translate-y-4 group-hover:translate-y-0">
                 <div className="text-white text-center p-4">
-                  <h3 className="text-xl font-serif mb-2">{image.title}</h3>
-                  <p className="text-sm uppercase tracking-wider opacity-80">
+                  <h3 className="text-xl font-serif mb-2 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-400 delay-100">
+                    {image.title}
+                  </h3>
+                  <p className="text-sm uppercase tracking-wider opacity-80 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-400 delay-200">
                     {image.category}
                   </p>
                 </div>
